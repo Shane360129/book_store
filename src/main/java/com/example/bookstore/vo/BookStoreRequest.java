@@ -3,12 +3,41 @@ package com.example.bookstore.vo;
 import com.example.bookstore.entity.BookStore;
 
 import java.util.List;
+import java.util.Map;
 
 public class BookStoreRequest {
 
     private List<BookStore> bookSaleList;
 
     private String message;
+
+    private String category;
+
+    private String customers;
+
+    private String booksales;
+
+    private String bookname;
+
+    private String author;
+
+    private int stock;
+
+    private int price;
+
+    private int sales;
+
+    private Map<String, Integer> saleMap;
+
+
+
+    public Map<String, Integer> getSaleMap() {
+        return saleMap;
+    }
+
+    public void setSaleMap(Map<String, Integer> saleMap) {
+        this.saleMap = saleMap;
+    }
 
     public BookStoreRequest() {
     }
@@ -35,5 +64,69 @@ public class BookStoreRequest {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getBookname() {
+        return bookname;
+    }
+
+    public void setBookname(String bookname) {
+        this.bookname = bookname;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(String customers) {
+        customers = customers;
+    }
+
+    public String getBooksales() {
+        return booksales;
+    }
+
+    public void setBooksales(String booksales) {
+        this.booksales = booksales;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getSales() {
+        return sales;
+    }
+
+    public void setSales(int sales) {
+        this.sales = sales;
     }
 }

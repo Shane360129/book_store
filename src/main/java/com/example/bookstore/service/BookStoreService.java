@@ -11,4 +11,12 @@ public interface BookStoreService {
     public BookStoreResponse addBookInfo (List<BookStore> bookStoreList);
 
     public BookStoreResponse findBycategory(BookStoreRequest requst);
+
+    public BookStoreResponse findByBookNameOrAuthor(BookStoreRequest requst);
+
+    public BookStoreResponse updateBookInfo(BookStoreRequest request);
+
+    public BookStoreResponse saleBook(BookStoreRequest request);
+
+    public BookStoreResponse saleRanking(List<BookStore> bookStoreList);
 }

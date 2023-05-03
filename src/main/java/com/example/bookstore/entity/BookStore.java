@@ -36,6 +36,8 @@ public class BookStore {
     public BookStore() {
     }
 
+
+
     public BookStore(String bookname, String isbn, String author, int price, int stock, int sales, String category) {
         this.bookname = bookname;
         this.isbn = isbn;

@@ -18,6 +18,31 @@ public class BookStoreController {
 
     @PostMapping(value = "add_book_info")
     public BookStoreResponse addBookInfo(@RequestBody BookStoreRequest request) {
-    return bookStoreService.addBookInfo(request.getBookSaleList());
+        return bookStoreService.addBookInfo(request.getBookSaleList());
+    }
+
+    @PostMapping(value = "find_by_category")
+    public BookStoreResponse findByCategory(@RequestBody BookStoreRequest request) {
+        return bookStoreService.findBycategory(request);
+    }
+
+    @PostMapping(value = "find_by_bookname")
+    public BookStoreResponse findByBookNameOrAuthor(@RequestBody BookStoreRequest request){
+        return bookStoreService.findByBookNameOrAuthor(request);
+    }
+
+    @PostMapping(value = "update_book_info")
+    public BookStoreResponse updatebookinfo(@RequestBody BookStoreRequest request){
+        return bookStoreService.updateBookInfo(request);
+    }
+
+    @PostMapping(value = "sale_book")
+    public BookStoreResponse saleBook(@RequestBody BookStoreRequest request){
+        return bookStoreService.saleBook(request);
+    }
+
+    @PostMapping(value = "book_rank")
+    public BookStoreResponse bookRank(@RequestBody BookStoreRequest request){
+        return bookStoreService.saleRanking(request.getBookSaleList());
     }
 }
