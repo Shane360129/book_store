@@ -8,7 +8,7 @@ public class NewBook {
 
     private String bookName;
 
-    private int totalPrice;
+    private int price;
 
     private int sale;
 
@@ -19,16 +19,16 @@ public class NewBook {
     public NewBook() {
     }
 
-    public NewBook(String bookName, int totalPrice, int sale, int stock) {
+    public NewBook(String bookName, int price, int sale, int stock) {
         this.bookName = bookName;
-        this.totalPrice = totalPrice;
+        this.price = price;
         this.sale = sale;
         this.stock = stock;
     }
 
-    public NewBook(String bookName, int totalPrice, int sale, int stock, String isbn) {
+    public NewBook(String bookName, int price, int sale, int stock, String isbn) {
         this.bookName = bookName;
-        this.totalPrice = totalPrice;
+        this.price = price;
         this.sale = sale;
         this.stock = stock;
         this.isbn = isbn;
@@ -42,12 +42,12 @@ public class NewBook {
         this.bookName = bookName;
     }
 
-    public int getTotalPrice() {
-        return totalPrice;
+    public int getPrice() {
+        return price;
     }
 
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public int getSale() {

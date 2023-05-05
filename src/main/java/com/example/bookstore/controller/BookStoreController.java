@@ -1,7 +1,6 @@
 package com.example.bookstore.controller;
 
 
-import com.example.bookstore.respository.BookStoreDao;
 import com.example.bookstore.service.BookStoreService;
 import com.example.bookstore.vo.BookStoreRequest;
 import com.example.bookstore.vo.BookStoreResponse;
@@ -44,5 +43,10 @@ public class BookStoreController {
     @PostMapping(value = "book_rank")
     public BookStoreResponse bookRank(@RequestBody BookStoreRequest request){
         return bookStoreService.saleRanking(request.getBookSaleList());
+    }
+
+    @PostMapping(value = "order_book")
+    public BookStoreResponse orderBook(@RequestBody BookStoreRequest request){
+        return bookStoreService.orderBook(request.getOrderMap());
     }
 }

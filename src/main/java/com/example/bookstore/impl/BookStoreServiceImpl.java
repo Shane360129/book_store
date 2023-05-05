@@ -42,8 +42,15 @@ public class BookStoreServiceImpl implements BookStoreService {
             if (info.getIsbn().length() != 13) {
                 return new BookStoreResponse("ISBN為13碼");
             }
+            if (!info.getCategory().isBlank()) {
+                return new BookStoreResponse("請輸入分類");
+            }
+            if(info.getCategory().lastIndexOf(",") != info.getCategory().length()-1){
+                info.setCategory(info.getCategory()+",");
+            }
             //檢查輸入資訊是否有誤
         }
+
         List<BookStore> result = bookStoreDao.findAllById(bookIsbn);
         if (result.size() > 0) {
             return new BookStoreResponse("新增書籍已存在");
@@ -51,6 +58,7 @@ public class BookStoreServiceImpl implements BookStoreService {
         //檢查新增資訊是否已存在
         bookStoreDao.saveAll(bookSaleList);
         return new BookStoreResponse(bookSaleList, "新增書籍資料成功");
+        //將資料加入資料庫
     }
 
     @Override
@@ -59,8 +67,7 @@ public class BookStoreServiceImpl implements BookStoreService {
         書籍分類搜尋(一或多)，只顯示書名、ISBN、作者、價格、庫存量
         有符合其中一個搜尋條件即可
          */
-        String category = request.getCategory();
-        List<BookStore> op = bookStoreDao.findAllByCategoryContaining(category);
+        List<BookStore> op = bookStoreDao.findAllByCategoryContaining(request.getCategory());
         List<NewBook> list = new ArrayList<>();
         if (op.isEmpty()) {
             return new BookStoreResponse("輸入分類錯誤");
@@ -77,7 +84,6 @@ public class BookStoreServiceImpl implements BookStoreService {
         return new BookStoreResponse("書籍查詢成功", list);
     }
 
-
     @Override
     public BookStoreResponse findByBookNameOrAuthor(BookStoreRequest request) {
         /*
@@ -93,16 +99,16 @@ public class BookStoreServiceImpl implements BookStoreService {
         }
         BookStore t = op.get();
         //分辨輸入者是消費者還是書商
-        if (!request.getMessage().equals("消費者")
-                && !request.getMessage().equals("書籍商")) {
+        if (!request.getCustomers().equals("消費者")
+                && !request.getCustomers().equals("書籍商")) {
             return new BookStoreResponse("請輸入您是消費者還是書籍商");
         }
-        if (request.getMessage().equals("消費者")) {
+        if (request.getCustomers().equals("消費者")) {
             Customers a = new Customers(t.getBookname(),
                     t.getIsbn(), t.getAuthor(), t.getPrice());
             return new BookStoreResponse(a);
         }
-        if (request.getMessage().equals("書籍商")) {
+        if (request.getCustomers().equals("書籍商")) {
             Book book2 = new Book(t.getBookname(), t.getIsbn(), t.getAuthor(),
                     t.getPrice(), t.getSales(), t.getStock());
             return new BookStoreResponse(book2);
@@ -133,9 +139,32 @@ public class BookStoreServiceImpl implements BookStoreService {
         int newPrice = request.getPrice();
         String category = request.getCategory();
         boolean update = false;
+        String newCategory = "";
         //設定是否有更新，若有更新資料再存入新資料
-        if (!request.getCategory().isBlank()) {
-            op.get().setCategory(op.get().getCategory() + ", " + category);
+        String[] res = op.get().getCategory().split(",");
+        String[] inputRes = category.split(",");
+        /***
+         *  將資料庫中的分類以及輸入的分類字串切割為陣列
+         *  使用兩個For迴圈去比對兩個陣列中的字串
+         *  找出不重複的字串加入資料庫
+         *  (雙迴圈
+         */
+
+        for (int i = 0; i < inputRes.length; i++) {
+            boolean isExit = false;
+            for (int j = 0; j < res.length; j++) {
+                if (inputRes[i].equals(res[j])) {
+                    isExit = true;
+                }
+            }
+            if (!isExit) {
+                newCategory = inputRes[i] + "," + newCategory;
+                //每次取出來的在加回前一次取的字串
+            }
+        }
+        //若有更新分類資料，則直接加入分類
+        if(!newCategory.isEmpty()) {
+            op.get().setCategory(op.get().getCategory() + newCategory);
             update = true;
         }
         if (purchase > 0) {
@@ -206,7 +235,7 @@ public class BookStoreServiceImpl implements BookStoreService {
         return new BookStoreResponse("購買完成", newList, totalPrice);
     }
 
-    //資料庫中只有一筆資料 所以不用List或者foreach
+    //           資料庫中只有一筆資料 所以不用List或者foreach
 //        if (!op.isPresent()) {
 //            return new BookStoreResponse("查無此書籍");
 //        }
@@ -232,7 +261,49 @@ public class BookStoreServiceImpl implements BookStoreService {
         /*
         列出銷量排行前三名
          */
-        List<BookStore> list = bookStoreDao.findTop3ByOrderBySalesDesc();
+        List<BookStore> list = bookStoreDao.findTop5ByOrderBySalesDesc();
         return new BookStoreResponse(list);
+    }
+
+    @Override
+    public BookStoreResponse orderBook(Map<String, Integer> orderMap) {
+        List<String> newList = new ArrayList<>();
+        for (String key : orderMap.keySet()) {
+            newList.add(key);
+        }
+        List<BookStore> res = bookStoreDao.findAllByBooknameIn(newList);
+        List<NewBook> saveList = new ArrayList<>();
+        List<String> key = new ArrayList<>();
+        List<Integer> value = new ArrayList<>();
+        int totalPrice = 0;
+        int newStock = 0;
+        int newSale = 0;
+        for (int a = 0; a < res.size(); a++) {
+            for (Map.Entry<String, Integer> item : orderMap.entrySet()) {
+                if (item.getValue() < 0) {
+                    return new BookStoreResponse("輸入數量錯誤");
+                }
+                if (res.isEmpty()) {
+                    return new BookStoreResponse("查無此書籍");
+                }
+                if (item.getValue() > res.get(a).getStock()) {
+                    return new BookStoreResponse("庫存不足");
+                }
+                key.add(item.getKey());
+                value.add(item.getValue());
+            }
+            totalPrice += res.get(a).getPrice() * value.get(a);
+            newStock = res.get(a).getStock() - value.get(a);
+            newSale = res.get(a).getSales() + value.get(a);
+            res.get(a).setStock(newStock);
+            res.get(a).setSales(newSale);
+            NewBook book1 = new NewBook(res.get(a).getBookname(), res.get(a).getPrice(), newSale, newStock);
+            saveList.add(book1);
+        }
+        bookStoreDao.saveAll(res);
+        NewBook book1 = new NewBook();
+        saveList.add(book1);
+        return new BookStoreResponse("購買完成", saveList, totalPrice);
+        
     }
 }

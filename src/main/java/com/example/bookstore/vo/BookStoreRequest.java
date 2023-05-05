@@ -1,6 +1,7 @@
 package com.example.bookstore.vo;
 
 import com.example.bookstore.entity.BookStore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -27,16 +28,16 @@ public class BookStoreRequest {
 
     private int sales;
 
-    private Map<String, Integer> saleMap;
+    @JsonProperty("order_book")
+    private Map<String, Integer> orderMap;
 
 
-
-    public Map<String, Integer> getSaleMap() {
-        return saleMap;
+    public Map<String, Integer> getOrderMap() {
+        return orderMap;
     }
 
-    public void setSaleMap(Map<String, Integer> saleMap) {
-        this.saleMap = saleMap;
+    public void setOrderMap(Map<String, Integer> orderMap) {
+        this.orderMap = orderMap;
     }
 
     public BookStoreRequest() {
@@ -95,7 +96,7 @@ public class BookStoreRequest {
     }
 
     public void setCustomers(String customers) {
-        customers = customers;
+        this.customers = customers;
     }
 
     public String getBooksales() {
@@ -129,4 +130,5 @@ public class BookStoreRequest {
     public void setSales(int sales) {
         this.sales = sales;
     }
+
 }

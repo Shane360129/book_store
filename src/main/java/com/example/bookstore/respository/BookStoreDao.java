@@ -18,7 +18,9 @@ public interface BookStoreDao extends JpaRepository<BookStore, String> {
 
     public Optional <BookStore>findAllByBookname(String name);
 
-    public List<BookStore> findTop3ByOrderBySalesDesc();
+    public List<BookStore> findTop5ByOrderBySalesDesc();
+
+    public List<BookStore> findAllByBooknameIn(List<String> list);
 
 //    @Transactional
 //    @Modifying

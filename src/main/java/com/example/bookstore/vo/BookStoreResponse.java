@@ -4,6 +4,7 @@ import com.example.bookstore.entity.BookStore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class BookStoreResponse {
@@ -18,7 +19,9 @@ public class BookStoreResponse {
 
     private List<NewBook> bookList;
 
-    private int toPrice;
+    private int totalPrice;
+
+    private Map<String,Integer> orderMap;
 
 
     public BookStoreResponse() {
@@ -64,10 +67,13 @@ public class BookStoreResponse {
         this.bookList = bookList;
     }
 
-    public BookStoreResponse(String message, List<NewBook> bookList, int toPrice) {
+    public BookStoreResponse(String message, List<NewBook> bookList, int totalPrice) {
         this.message = message;
         this.bookList = bookList;
-        this.toPrice = toPrice;
+        this.totalPrice = totalPrice;
+    }
+
+    public BookStoreResponse(Map<String, Integer> orderMap, int totalPrice, String message) {
     }
 
     public Book getBook() {
@@ -110,11 +116,19 @@ public class BookStoreResponse {
         this.customers = customers;
     }
 
-    public int getToPrice() {
-        return toPrice;
+    public int getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setToPrice(int toPrice) {
-        this.toPrice = toPrice;
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public Map<String, Integer> getOrderMap() {
+        return orderMap;
+    }
+
+    public void setOrderMap(Map<String, Integer> orderMap) {
+        this.orderMap = orderMap;
     }
 }
