@@ -17,7 +17,7 @@ public interface BookStoreService {
 
     public BookStoreResponse updateBookInfo(BookStoreRequest request);
 
-    public BookStoreResponse saleBook(BookStoreRequest request);
+//    public BookStoreResponse saleBook(BookStoreRequest request);
 
     public BookStoreResponse saleRanking(List<BookStore> bookStoreList);
 

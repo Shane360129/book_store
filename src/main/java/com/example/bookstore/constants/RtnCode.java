@@ -8,8 +8,8 @@ public enum RtnCode {
     SUCCESSFUL("200", "Successful"),
     CANNOT_EMPTY("400", "Account or password is empty"),
     DATA_ERROR("400", "Account or password is error"),
-    NOT_FOUND("404", "Not found"),
-    CREATEDSUCCESS("201", "Account is created successfully");
+    NOT_FOUND("404", "Not found");
+
 
 
     private String code;

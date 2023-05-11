@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class BookStoreRequest {
 
+    //跟Response 一樣若有相同屬性可以只使用一個，但若有不同的分類建立不同的Class
     private List<BookStore> bookSaleList;
 
     private String message;
@@ -27,6 +28,8 @@ public class BookStoreRequest {
     private int price;
 
     private int sales;
+
+    private String isbn;
 
     @JsonProperty("order_book")
     private Map<String, Integer> orderMap;
@@ -131,4 +134,11 @@ public class BookStoreRequest {
         this.sales = sales;
     }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
 }

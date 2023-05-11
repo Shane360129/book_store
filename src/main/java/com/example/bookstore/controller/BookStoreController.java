@@ -35,10 +35,6 @@ public class BookStoreController {
         return bookStoreService.updateBookInfo(request);
     }
 
-    @PostMapping(value = "sale_book")
-    public BookStoreResponse saleBook(@RequestBody BookStoreRequest request){
-        return bookStoreService.saleBook(request);
-    }
 
     @PostMapping(value = "book_rank")
     public BookStoreResponse bookRank(@RequestBody BookStoreRequest request){

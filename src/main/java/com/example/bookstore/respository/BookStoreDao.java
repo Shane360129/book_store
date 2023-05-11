@@ -2,6 +2,8 @@ package com.example.bookstore.respository;
 
 import com.example.bookstore.entity.BookStore;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,15 +14,14 @@ public interface BookStoreDao extends JpaRepository<BookStore, String> {
 
     public List<BookStore> findAllByCategoryContaining(String category);
 
-    public Optional<BookStore> findByBooknameOrAuthor(String name, String name1);
-
-    public BookStore findByBookname(String name);
-
-    public Optional <BookStore>findAllByBookname(String name);
+    public Optional<BookStore> findByBooknameOrAuthorOrIsbnContaining(String name, String name1, String name3);
 
     public List<BookStore> findTop5ByOrderBySalesDesc();
 
     public List<BookStore> findAllByBooknameIn(List<String> list);
+
+    public List<BookStore> findAllByIsbn(String isbn);
+
 
 //    @Transactional
 //    @Modifying
@@ -32,7 +33,7 @@ public interface BookStoreDao extends JpaRepository<BookStore, String> {
 //            "from BookStore b where b.bookname like %:key%")
 //    public List<Book> byBookNameOrAuthor(@Param("key")String name);
 
-//    @Query("select b.bookname  from BookStore b where b.bookname like %:key%")
-//    public String byBookName(@Param("key")String name);
+    @Query("select b.bookname  from BookStore b where b.bookname like %:key%")
+    public String byBookName(@Param("key")String name);
 
 }

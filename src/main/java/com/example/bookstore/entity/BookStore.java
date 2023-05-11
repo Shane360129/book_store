@@ -10,32 +10,29 @@ import jakarta.persistence.Table;
 @Table(name = "book_sale")
 public class BookStore {
 
+    @Id
+    @Column(name = "isbn")
+    private String isbn;
+    @Column(name = "bookname")
+    private String bookname;
 
-        @Column(name = "bookname")
-        private String bookname;
+    @Column(name = "author")
+    private String author;
 
-        @Id
-        @Column(name = "isbn")
-        private String isbn;
+    @Column(name = "price")
+    private int price;
 
-        @Column(name = "author")
-        private String author;
+    @Column(name = "stock")
+    private int stock;
 
-        @Column(name = "price")
-        private int price;
+    @Column(name = "sales")
+    private int sales;
 
-        @Column(name = "stock")
-        private int stock;
-
-        @Column(name = "sales")
-        private int sales;
-
-        @Column(name = "category")
-        private String category;
+    @Column(name = "category")
+    private String category;
 
     public BookStore() {
     }
-
 
 
     public BookStore(String bookname, String isbn, String author, int price, int stock, int sales, String category) {

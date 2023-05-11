@@ -1,2 +1,4 @@
-package com.example.bookstore.vo;public class SerchBook {
+package com.example.bookstore.vo;
+
+public class SerchBook {
 }

@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @SpringBootTest
@@ -102,9 +99,29 @@ public class BookStoreTest {
     @Test
     public void orderBook() {
         Map<String, Integer> finalOrderMap = new HashMap<>();
-        finalOrderMap.put("海王" , -2 );
+        finalOrderMap.put("海王", -2);
         BookStoreResponse response = bookStoreService.orderBook(finalOrderMap);
         Book res = response.getBook();
-        Assert.isTrue(res != null , "購買失敗");
+        Assert.isTrue(res != null, "購買失敗");
+    }
+
+    @Test
+    public void stringJoinTest() {
+        List<String> list = new ArrayList<>(Arrays.asList("a", "b", "c"));
+        System.out.println(list.toString());
+        String str = String.join(",", list);
+        System.out.println(str);
+        List<String> list2 = new ArrayList<>(Arrays.asList("c", "d", "e"));
+        list.addAll(list2);
+        Set<String> set = new HashSet<>(list);
+        System.out.println(set.toString());
+        String str2 = String.join(",", set);
+        System.out.println(str2);
+        //-----------------------
+        String[] ary = str2.split(",");
+        List<String> list3 = new ArrayList<>(Arrays.asList("f", "g", "h"));
+        List<String> list4 = new ArrayList<>(Arrays.asList(ary));
+        list4.addAll(list3);
+        System.out.println(list4);
     }
 }
