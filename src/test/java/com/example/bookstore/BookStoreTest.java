@@ -124,4 +124,9 @@ public class BookStoreTest {
         list4.addAll(list3);
         System.out.println(list4);
     }
+
+    @Test
+    public void test(){
+        System.out.println("Test");
+    }
 }

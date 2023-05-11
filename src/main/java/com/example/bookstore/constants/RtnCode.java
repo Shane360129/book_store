@@ -12,6 +12,7 @@ public enum RtnCode {
 
 
 
+
     private String code;
 
     private String message;
