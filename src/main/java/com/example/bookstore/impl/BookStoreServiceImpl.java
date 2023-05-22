@@ -122,45 +122,12 @@ public class BookStoreServiceImpl implements BookStoreService {
 
     @Override
     public BookStoreResponse updateBookInfo(BookStoreRequest request) {
-        /*
-        更新書籍資料，先檢查是否為空request
-        然後查詢書名
-        按照request內容有值的及更新資料庫內資料
-         */
-//        findById
-//        String newCategory = request.getCategory();
-//        for (int i = 0; i < inputRes.length; i++) {
-//            boolean isExsit = false;
-//            for (int j = 0; j < ; j++) {
-//                if (inputRes[i].equals(res[j])) {
-//                    isExsit = true;
-//                }
-//            }
-//        設定是否有更新，若有更新資料再存入新資料
-//           將資料庫中的分類以及輸入的分類字串切割為陣列
-//           使用兩個For迴圈去比對兩個陣列中的字串
-//           找出不重複的字串加入資料庫
-//        for (int i = 0; i < inputRes.length; i++) {
-//            boolean isExsit = false;
-//            for (int j = 0; j < ; j++) {
-//                if (inputRes[i].equals(res[j])) {
-//                    isExsit = true;
-//                }
-//            }
-//            if (!isExsit) {
-//                newCategory = inputRes[i] + "," + newCategory;
-//                //每次取出來的在加回前一次取的字串
-//            }
-//        }
-//      若有更新分類資料，則直接加入分類
+
 
         if (request == null) {
             return new BookStoreResponse("輸入資料不得為空");
         }
-        String isbn = request.getIsbn();
-        if (!StringUtils.hasText(isbn)) {
-            return new BookStoreResponse("查無此書籍");
-        }
+
         List<BookStore> list = bookStoreDao.findAllByIsbn(request.getIsbn());
         if (list.isEmpty()) {
             return new BookStoreResponse("查無此書籍");
@@ -193,80 +160,7 @@ public class BookStoreServiceImpl implements BookStoreService {
             return new BookStoreResponse("沒有更新內容");
         }
     }
-//            if (!request.getCategory().isBlank()) {
-//                Book book = new Book(list.get(0).getCategory(), op.get().getIsbn(),
-//                        op.get().getAuthor(),
-//                        op.get().getPrice(), op.get().getCategory());
-//                return new BookStoreResponse(book);
-//            }
-//            if (purchase > 0) {
-//                Book book1 = new Book(op.get().getBookname(), op.get().getIsbn(),
-//                        op.get().getAuthor(),
-//                        op.get().getPrice(), op.get().getStock());
-//                return new BookStoreResponse(book1);
-//            }
-//            if (newPrice > 0) {
-//                Book book2 = new Book(op.get().getBookname(), op.get().getIsbn(),
-//                        op.get().getAuthor(),
-//                        op.get().getPrice(), op.get().getStock());
-//                return new BookStoreResponse(book2);
-//            }
-
-
-//        @Override
-//    public BookStoreResponse saleBook(BookStoreRequest request) {
-//        List<BookStore> list = request.getBookSaleList();
-//        List<NewBook> newList = new ArrayList<>();
-        /*
-        銷售書籍，先檢查書籍名稱
-        檢查是否庫存足夠
-        用銷售量去計算庫存以及累積銷售跟金額
-        使用List去接多筆資料
-         */
-//        int totalPrice = 0;
 //
-//        for (int j = 0; j < list.size(); j++) {
-//            BookStore op = bookStoreDao.findByBookname(list.get(j).getBookname());
-//            if (op == null) {
-//                return new BookStoreResponse("查無此資料");
-//            }
-//            BookStore r = request.getBookSaleList().get(j);
-//            if (op.getSales() < 0
-//                    || op.getStock() < r.getSales()) {
-//                return new BookStoreResponse("庫存不足");
-//            }
-//            totalPrice += op.getPrice() * r.getSales();
-//            int newStock = op.getStock() - r.getSales();
-//            int newSale = op.getSales() + r.getSales();
-//            op.setStock(newStock);
-//            op.setSales(newSale);
-//            bookStoreDao.save(op);
-//            NewBook book1 = new NewBook(op.getBookname(), op.getPrice(), newStock, newSale);
-//            newList.add(book1);
-//        }
-//        return new BookStoreResponse("購買完成", newList, totalPrice);
-//    }
-    //           資料庫中只有一筆資料 所以不用List或者foreach
-//        if (!op.isPresent()) {
-//            return new BookStoreResponse("查無此書籍");
-//        }
-//        if (op.get().getStock() <= 0
-//                || op.get().getStock() < request.getStock()) {
-//            return new BookStoreResponse("庫存不足");
-//        }
-//        //防呆
-//        int totalPrice = op.get().getPrice() * request.getStock();
-//        int newstock = op.get().getStock() - request.getStock();
-//        int newsale = op.get().getSales() + request.getSales();
-//
-//        op.get().setStock(newstock);
-//        op.get().setSales(newsale);
-//
-//        bookStoreDao.save(op.get());
-//
-//        Book book = new Book(bookname, totalPrice, newsale, newstock);
-//
-//        return new BookStoreResponse(book);
     @Override
     public BookStoreResponse saleRanking(List<BookStore> bookStoreList) {
         /*
