@@ -7,14 +7,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface BookStoreDao extends JpaRepository<BookStore, String> {
 
     public List<BookStore> findAllByCategoryContaining(String category);
 
-    public Optional<BookStore> findByBooknameOrAuthorOrIsbnContaining(String name, String name1, String name3);
+    public List<BookStore> findByBooknameOrAuthorOrIsbnContaining(String name, String name1, String name3);
 
     public List<BookStore> findTop5ByOrderBySalesDesc();
 

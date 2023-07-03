@@ -127,6 +127,11 @@ public class BookStoreTest {
 
     @Test
     public void test(){
-        System.out.println("Test");
+        Map<String, Integer> orderMap = new HashMap<>();
+        orderMap.put("1",1);
+        orderMap.put("5",2);
+        orderMap.put("3",3);
+        List<String> newList = new ArrayList<>(orderMap.keySet());
+        System.out.println(newList);
     }
 }

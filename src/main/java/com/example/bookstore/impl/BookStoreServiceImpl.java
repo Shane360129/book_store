@@ -42,20 +42,21 @@ public class BookStoreServiceImpl implements BookStoreService {
             if (info.getIsbn().length() != 13) {
                 return new BookStoreResponse("ISBN為13碼");
             }
-            if (!info.getCategory().isBlank()) {
+            if (info.getCategory().isBlank()) {
                 return new BookStoreResponse("請輸入分類");
             }
             if (info.getCategory().lastIndexOf(",") != info.getCategory().length() - 1) {
                 info.setCategory(info.getCategory() + ",");
             }
+            //檢查新增資訊是否已存在
+            List<BookStore> result = bookStoreDao.findAllById(Collections.singleton(info.getIsbn()));
+            if (result.size() > 0) {
+                return new BookStoreResponse("新增書籍已存在");
+            }
             //檢查輸入資訊是否有誤
         }
 
-        List<BookStore> result = bookStoreDao.findAllById(bookIsbn);
-        if (result.size() > 0) {
-            return new BookStoreResponse("新增書籍已存在");
-        }
-        //檢查新增資訊是否已存在
+
         bookStoreDao.saveAll(bookSaleList);
         return new BookStoreResponse(bookSaleList, "新增書籍資料成功");
         //將資料加入資料庫
@@ -94,27 +95,30 @@ public class BookStoreServiceImpl implements BookStoreService {
         String name = request.getBookname();
         String name1 = request.getAuthor();
         String name2 = request.getIsbn();
-        Optional<BookStore> op = bookStoreDao.findByBooknameOrAuthorOrIsbnContaining(name, name1, name2);
+        List<BookStore> op = bookStoreDao.findByBooknameOrAuthorOrIsbnContaining(name, name1, name2);
         if (op.isEmpty()) {
             return new BookStoreResponse("輸入錯誤");
         }
-        BookStore t = op.get();
-//
-        //分辨輸入者是消費者還是書商
+//        List<Customers> cuList = new ArrayList<>();
+//        List<Book> saList = new ArrayList<>();
+        for(int i = 0 ; i<=op.size();i++) {
+            BookStore t = op.get(i);
+//        分辨輸入者是消費者還是書商
 //        使用boolean值去判斷
-        if (!request.getCustomers().equals("消費者")
-                && !request.getCustomers().equals("書籍商")) {
-            return new BookStoreResponse("請輸入您是消費者還是書籍商");
-        }
-        if (request.getCustomers().equals("消費者")) {
-            Customers a = new Customers(t.getBookname(),
-                    t.getIsbn(), t.getAuthor(), t.getPrice());
-            return new BookStoreResponse(a);
-        }
-        if (request.getCustomers().equals("書籍商")) {
-            Book book2 = new Book(t.getBookname(), t.getIsbn(), t.getAuthor(),
-                    t.getPrice(), t.getSales(), t.getStock());
-            return new BookStoreResponse(book2);
+            if (!request.getCustomers().equals("消費者")
+                    && !request.getCustomers().equals("書籍商")) {
+                return new BookStoreResponse("請輸入您是消費者還是書籍商");
+            }
+            if (request.getCustomers().equals("消費者")) {
+                Customers a = new Customers(t.getBookname(),
+                        t.getIsbn(), t.getAuthor(), t.getPrice());
+                return new BookStoreResponse(a);
+            }
+            if (request.getCustomers().equals("書籍商")) {
+                Book book2 = new Book(t.getBookname(), t.getIsbn(), t.getAuthor(),
+                        t.getPrice(), t.getSales(), t.getStock());
+                return new BookStoreResponse(book2);
+            }
         }
         //比對輸入資料
         return new BookStoreResponse("查詢成功");
@@ -134,8 +138,7 @@ public class BookStoreServiceImpl implements BookStoreService {
         }
         int purchase = request.getStock();
         int newPrice = request.getPrice();
-        Set<String> set = new HashSet<>(Arrays.asList(request.getCategory()));
-        String str = String.join(",", set);
+        String str = ",";
         List<BookStore> saveList = new ArrayList<>();
         boolean update = false;
         for (BookStore a : list) {

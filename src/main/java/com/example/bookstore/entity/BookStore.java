@@ -1,10 +1,10 @@
 package com.example.bookstore.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "book_sale")
@@ -13,6 +13,7 @@ public class BookStore {
     @Id
     @Column(name = "isbn")
     private String isbn;
+
     @Column(name = "bookname")
     private String bookname;
 
